@@ -1,11 +1,10 @@
 import dataset, model, train, torch, util
 
 @util.main
-def main(disable=0):
+def main(disable=0, device="cuda"):
 
     disable = int(disable)
 
-    device = ["cpu", "cuda"][torch.cuda.is_available()]
     print("Using device: %s" % device)
 
     N = 512
