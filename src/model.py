@@ -1,4 +1,4 @@
-import torch, math, tqdm, copy
+import torch, math, tqdm, copy, random
 import torch.utils.data
 
 from MovingAverage import MovingAverage
@@ -24,8 +24,8 @@ class EvolutionaryModel:
 
     def __init__(self, D):
         self.pool = [EvolutionaryUnit(D)]
-        self.cycle = 8
-        self.mutation_rate = 3
+        self.cycle = 1
+        self.mutation_rate = 2
         self.i = 0
         self.max_adult_pop = 20
         self.max_pop = 40
@@ -60,7 +60,7 @@ class EvolutionaryModel:
         for u1, p1 in unitprobs:
             for u2, p2 in unitprobs:
                 if u1 is not u2:
-                    if math.random() < p1*p2:
+                    if random.random() < p1*p2:
                         u1.share_abilities(u2)
 
 class EvolutionaryUnit(Model):
