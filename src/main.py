@@ -7,13 +7,14 @@ if __name__ == "__main__":
 
     N = 512
     D = 32
+    CYCLES = 100
 
     data = dataset.create(N, D)
     test = dataset.test(N, D)
 
     net = model.EvolutionaryModel(D).to(device)
 
-    for i in range(5):
+    for i in range(CYCLES):
         net.do_cycle(*data, *test)
 
     train.visualize(net.select_best(), outf="results.png", D=D)
