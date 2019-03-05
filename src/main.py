@@ -3,6 +3,7 @@ import dataset, model, train
 if __name__ == "__main__":
 
     device = ["cpu", "cuda"][torch.cuda.is_available()]
+    print("Using device: %s" % device)
 
     N = 512
     D = 32
