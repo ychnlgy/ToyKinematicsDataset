@@ -34,6 +34,7 @@ class EvolutionaryModel:
     def to(self, device):
         for unit in self.pool:
             unit.set_device(device)
+        return self
 
     def do_cycle(self, X, Y, X_test, Y_test):
 
