@@ -53,7 +53,8 @@ class EvolutionaryModel:
             self.populate()
 
         print("Population size: %d" % len(self.pool))
-        print("Cycle %d best score: %.3f" % (self.i, min(self.pool).get_score()))
+        best = min(self.pool)
+        print("Cycle %d best score: %.3f (%.3f training)" % (self.i, best.get_score(), best.get_train_score()))
 
     def populate(self):
         sorted_units = sorted(self.pool)[:self.max_adult_pop]
@@ -84,6 +85,7 @@ class EvolutionaryUnit(Model):
         self.epochs = 100
         self.batch = 8
         self.score = MovingAverage(momentum=0.90)
+        self.train_score = MovingAverage(momentum=0.9)
 
     def set_device(self, device):
         self.device = device
@@ -101,7 +103,7 @@ class EvolutionaryUnit(Model):
         optim = torch.optim.Adam(self.parameters())
         sched = torch.optim.lr_scheduler.MultiStepLR(optim, milestones=[60])
 
-        for epoch in tqdm.tqdm(range(self.epochs)):
+        for epoch in tqdm.tqdm(range(self.epochs), ncols=80):
 
             self.train()
             for x, y in dataloader:
@@ -113,6 +115,8 @@ class EvolutionaryUnit(Model):
                 loss.backward()
                 optim.step()
 
+                self.train_score.update(self.calc_score(yh, y))
+
             sched.step()
 
         with torch.no_grad():
@@ -122,6 +126,9 @@ class EvolutionaryUnit(Model):
 
     def get_score(self):
         return self.score.peek() # lower the better
+
+    def get_train_score(self):
+        return self.train_score.peek()
 
     def mutate(self):
         out = copy.deepcopy(self)
