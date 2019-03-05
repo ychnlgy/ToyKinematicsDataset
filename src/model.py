@@ -27,8 +27,8 @@ class EvolutionaryModel:
         self.cycle = 4 if not disable else 9999
         self.mutation_rate = 2 if not disable else 9999
         self.i = 0
-        self.max_adult_pop = 8
-        self.max_pop = 16
+        self.max_adult_pop = 16
+        self.max_pop = 32
         self.softmax = torch.nn.Softmax(dim=0)
 
     def select_best(self):
