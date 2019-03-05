@@ -36,19 +36,21 @@ def train(X, Y, X_test, Y_test, model):
 
 def visualize(model, outf, D):
 
-    model.to("cpu")
-    
-    a = torch.zeros(100) + 0.5
-    v = torch.zeros(100) + 0.5
-    t = torch.linspace(0, 1, 100)
-    d = t*v + 0.5*a*t**2
+    with torch.no_grad():
 
-    xp = torch.cat([t.unsqueeze(1), v.unsqueeze(1), a.unsqueeze(1), torch.rand(100, D-3)], dim=1)
-    dh = model(xp)
+        model.to("cpu")
+        
+        a = torch.zeros(100) + 0.5
+        v = torch.zeros(100) + 0.5
+        t = torch.linspace(0, 1, 100)
+        d = t*v + 0.5*a*t**2
 
-    pyplot.plot(t.numpy(), d.numpy(), label="Ground truth")
-    pyplot.plot(t.numpy(), dh.numpy(), label="Predicted trajectory")
-    pyplot.legend()
+        xp = torch.cat([t.unsqueeze(1), v.unsqueeze(1), a.unsqueeze(1), torch.rand(100, D-3)], dim=1)
+        dh = model(xp)
 
-    pyplot.savefig(outf)
+        pyplot.plot(t.numpy(), d.numpy(), label="Ground truth")
+        pyplot.plot(t.numpy(), dh.numpy(), label="Predicted trajectory")
+        pyplot.legend()
+
+        pyplot.savefig(outf)
     print("Saved visualization to: %s." % outf)
