@@ -1,6 +1,8 @@
 import torch, tqdm
 import torch.utils.data
 
+import matplotlib
+matplotlib.use("agg")
 from matplotlib import pyplot
 
 
