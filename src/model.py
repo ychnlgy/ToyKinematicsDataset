@@ -22,7 +22,7 @@ class Model(torch.nn.Module):
 
 class EvolutionaryModel:
 
-    def __init__(self, D, disable=True):
+    def __init__(self, D, disable):
         self.pool = [EvolutionaryUnit(D)]
         self.cycle = 4 if not disable else 9999
         self.mutation_rate = 2 if not disable else 9999

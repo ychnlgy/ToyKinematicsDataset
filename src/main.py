@@ -1,6 +1,9 @@
-import dataset, model, train, torch
+import dataset, model, train, torch, util
 
-if __name__ == "__main__":
+@util.main
+def main(disable=0):
+
+    disable = int(disable)
 
     device = ["cpu", "cuda"][torch.cuda.is_available()]
     print("Using device: %s" % device)
@@ -12,7 +15,7 @@ if __name__ == "__main__":
     data = dataset.create(N, D)
     test = dataset.test(N, D)
 
-    net = model.EvolutionaryModel(D, disable=True).to(device)
+    net = model.EvolutionaryModel(D, disable=disable).to(device)
 
     for i in range(CYCLES):
         net.do_cycle(*data, *test)
