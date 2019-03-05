@@ -12,7 +12,7 @@ if __name__ == "__main__":
     data = dataset.create(N, D)
     test = dataset.test(N, D)
 
-    net = model.EvolutionaryModel(D).to(device)
+    net = model.EvolutionaryModel(D, disable=True).to(device)
 
     for i in range(CYCLES):
         net.do_cycle(*data, *test)
