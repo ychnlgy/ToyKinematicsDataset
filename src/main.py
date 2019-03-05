@@ -16,8 +16,11 @@ def main(disable=0, device="cuda", cycles=100, D=32, N=128):
 
     net = model.EvolutionaryModel(D, disable=disable).to(device)
 
-    for i in range(cycles):
-        net.do_cycle(*data, *test)
+    try:
+        for i in range(cycles):
+            net.do_cycle(*data, *test)
+    except KeyboardInterrupt:
+        pass
 
     best = net.select_best()
     print(best.net[0].weight[0])
