@@ -79,8 +79,8 @@ class EvolutionaryUnit(Model):
     def __init__(self, D):
         super().__init__(D)
         self.target_modules = [torch.nn.Linear]
-        self.gain_rate = 0.05
-        self.loss_rate = 0.20
+        self.gain_rate = 0.01
+        self.loss_rate = 0.05
 
         self.epochs = 100
         self.batch = 8
