@@ -74,8 +74,6 @@ class EvolutionaryModel:
         print("Offspring size: %d" % len(children))
         return children
 
-EPS = 1e-3
-
 class EvolutionaryUnit(Model):
 
     def __init__(self, D):
@@ -170,8 +168,7 @@ class EvolutionaryUnit(Model):
         m.weight.data[i] = v[i]
 
     def get_new_weights(self, m, rate):
-        j = m.weight.data < EPS
-        i = (torch.rand_like(m.weight.data) < rate) & j
+        i = (torch.rand_like(m.weight.data) < rate)
         v = torch.zeros_like(m.weight.data)
         return i, v
 
