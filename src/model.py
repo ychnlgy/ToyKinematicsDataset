@@ -57,11 +57,13 @@ class EvolutionaryModel:
         self.pool = (sorted_units + self.mate(list(zip(sorted_units, probs))))[:self.max_pop]
 
     def mate(self, unitprobs):
+        children = []
         for u1, p1 in unitprobs:
             for u2, p2 in unitprobs:
                 if u1 is not u2:
                     if random.random() < p1*p2:
-                        u1.share_abilities(u2)
+                        children.extend(u1.share_abilities(u2))
+        return children
 
 class EvolutionaryUnit(Model):
 
