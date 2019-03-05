@@ -25,7 +25,7 @@ class EvolutionaryModel:
     def __init__(self, D):
         self.pool = [EvolutionaryUnit(D)]
         self.cycle = 8
-        self.mutation_rate = 4
+        self.mutation_rate = 3
         self.i = 0
         self.max_adult_pop = 20
         self.max_pop = 40
