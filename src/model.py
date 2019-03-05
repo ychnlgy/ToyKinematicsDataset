@@ -64,7 +64,7 @@ class EvolutionaryModel:
         for u1, p1 in unitprobs:
             for u2, p2 in unitprobs:
                 if u1 is not u2:
-                    if random.random() < p1+p2:
+                    if random.random() < max(p1, p2):
                         children.extend(u1.share_abilities(u2))
         print("Offspring size: %d" % len(children))
         return children
