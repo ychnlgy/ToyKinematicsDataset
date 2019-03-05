@@ -31,6 +31,10 @@ class EvolutionaryModel:
         self.max_pop = 40
         self.softmax = torch.nn.Softmax(dim=0)
 
+    def to(self, device):
+        for unit in self.pool:
+            unit.set_device(device)
+
     def do_cycle(self, X, Y, X_test, Y_test):
 
         for unit in self.pool:
@@ -70,6 +74,10 @@ class EvolutionaryUnit(Model):
         self.batch = 8
         self.score = MovingAverage(momentum=0.90)
 
+    def set_device(self):
+        self.device = device
+        self.to(device)
+
     def __lt__(self, other):
         return self.get_score() < other.get_score()
 
@@ -86,6 +94,8 @@ class EvolutionaryUnit(Model):
 
             self.train()
             for x, y in dataloader:
+                x = x.to(self.device)
+                y = y.to(self.device)
                 yh = self(x)
                 loss = lossf(yh, y)
                 optim.zero_grad()
@@ -96,8 +106,8 @@ class EvolutionaryUnit(Model):
 
         with torch.no_grad():
             self.eval()
-            yh_test = self(X_test)
-            self.score.update(self.calc_score(yh_test, Y_test))
+            yh_test = self(X_test.to(self.device))
+            self.score.update(self.calc_score(yh_test, Y_test.to(self.device)))
 
     def get_score(self):
         return self.score.peek() # lower the better
