@@ -112,7 +112,7 @@ class EvolutionaryUnit(Model):
         optim = torch.optim.Adam(self.parameters())
         sched = torch.optim.lr_scheduler.MultiStepLR(optim, milestones=[60])
 
-        for epoch in tqdm.tqdm(range(self.epochs), ncols=80):
+        for epoch in range(self.epochs):
 
             self.train()
             for x, y in dataloader:
