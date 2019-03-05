@@ -9,11 +9,11 @@ class Model(torch.nn.Module):
         super().__init__()
         self.net = torch.nn.Sequential(
 
-            torch.nn.Linear(D, 256),
+            torch.nn.Linear(D, 64),
             torch.nn.LeakyReLU(),
-            torch.nn.Linear(256, 256),
+            torch.nn.Linear(64, 64),
             torch.nn.LeakyReLU(),
-            torch.nn.Linear(256, 1)
+            torch.nn.Linear(64, 1)
 
         )
 
