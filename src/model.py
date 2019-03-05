@@ -27,8 +27,8 @@ class EvolutionaryModel:
         self.cycle = 4 if not disable else 9999
         self.mutation_rate = 2 if not disable else 9999
         self.i = 0
-        self.max_adult_pop = 20
-        self.max_pop = 40
+        self.max_adult_pop = 8
+        self.max_pop = 16
         self.softmax = torch.nn.Softmax(dim=0)
 
     def select_best(self):
@@ -47,11 +47,13 @@ class EvolutionaryModel:
         self.i += 1
         if self.i % self.cycle == self.mutation_rate:
             self.pool.extend([unit.mutate() for unit in self.pool])
+            random.shuffle(self.pool)
+            self.pool = self.pool[:self.max_pop]
         if self.i % self.cycle == 0:
             self.populate()
 
         print("Population size: %d" % len(self.pool))
-        print("Cycle %d best score: %.3f" % (self.i, self.pool[0].get_score()))
+        print("Cycle %d best score: %.3f" % (self.i, min(self.pool).get_score()))
 
     def populate(self):
         sorted_units = sorted(self.pool)[:self.max_adult_pop]
@@ -76,8 +78,8 @@ class EvolutionaryUnit(Model):
     def __init__(self, D):
         super().__init__(D)
         self.target_modules = [torch.nn.Linear]
-        self.gain_rate = 0.005
-        self.loss_rate = 0.010
+        self.gain_rate = 0.05
+        self.loss_rate = 0.50
 
         self.epochs = 100
         self.batch = 8
