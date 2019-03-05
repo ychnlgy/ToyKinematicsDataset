@@ -13,6 +13,7 @@ if __name__ == "__main__":
 
     net = model.EvolutionaryModel(D).to(device)
 
-    for i in range(100):
+    for i in range(5):
         net.do_cycle(*data, *test)
-    #train.train(*data, *test, net)
+
+    train.visualize(net.selected_best())

@@ -31,6 +31,9 @@ class EvolutionaryModel:
         self.max_pop = 40
         self.softmax = torch.nn.Softmax(dim=0)
 
+    def select_best(self):
+        return self.pool[0]
+
     def to(self, device):
         for unit in self.pool:
             unit.set_device(device)
