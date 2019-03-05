@@ -16,4 +16,4 @@ if __name__ == "__main__":
     for i in range(5):
         net.do_cycle(*data, *test)
 
-    train.visualize(net.selected_best())
+    train.visualize(net.select_best())
