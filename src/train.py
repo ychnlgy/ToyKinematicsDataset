@@ -34,7 +34,7 @@ def train(X, Y, X_test, Y_test, model):
         yh = model(X)
         print("Train/test difference: %.3f/%.3f" % (score(yh, Y), score(yh_test, Y_test)))
 
-def visualize(model):
+def visualize(model, outf, D):
 
     model.to("cpu")
     
@@ -43,11 +43,12 @@ def visualize(model):
     t = torch.linspace(0, 1, 100)
     d = t*v + 0.5*a*t**2
 
-    xp = torch.cat([t.unsqueeze(1), v.unsqueeze(1), a.unsqueeze(1), torch.rand(100, X.size(1)-3)], dim=1)
+    xp = torch.cat([t.unsqueeze(1), v.unsqueeze(1), a.unsqueeze(1), torch.rand(100, D-3)], dim=1)
     dh = model(xp)
 
     pyplot.plot(t.numpy(), d.numpy(), label="Ground truth")
     pyplot.plot(t.numpy(), dh.numpy(), label="Predicted trajectory")
     pyplot.legend()
-    
-    pyplot.savefig("results.png")
+
+    pyplot.savefig(outf)
+    print("Saved visualization to: %s." % outf)
