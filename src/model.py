@@ -51,7 +51,7 @@ class EvolutionaryModel:
         print("Cycle %d best score: %.3f" % (self.i, self.pool[0].get_score()))
 
     def populate(self):
-        sorted_units = self.pool.sort()[:self.max_adult_pop]
+        sorted_units = sorted(self.pool)[:self.max_adult_pop]
         scores = [u.get_score() for u in sorted_units]
         probs = self.softmax(-torch.Tensor(scores))
         self.pool = (sorted_units + self.mate(list(zip(sorted_units, probs))))[:self.max_pop]
