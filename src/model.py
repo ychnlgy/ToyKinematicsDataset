@@ -17,9 +17,6 @@ class Model(torch.nn.Module):
 
         )
 
-        self.net[0].weight.data[:,3:] = 0
-        print(self.net[0].weight.data)
-
     def forward(self, X):
         return self.net(X).squeeze(-1)
 
