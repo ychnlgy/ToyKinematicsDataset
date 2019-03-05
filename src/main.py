@@ -1,4 +1,4 @@
-import dataset, model, train
+import dataset, model, train, torch
 
 if __name__ == "__main__":
 
