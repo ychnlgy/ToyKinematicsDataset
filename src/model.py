@@ -68,13 +68,15 @@ class EvolutionaryModel:
                         children.extend(u1.share_abilities(u2))
         return children
 
+EPS = 1e-3
+
 class EvolutionaryUnit(Model):
 
     def __init__(self, D):
         super().__init__(D)
         self.target_modules = [torch.nn.Linear]
-        self.gain_rate = 0.0005
-        self.loss_rate = 0.0010
+        self.gain_rate = 0.005
+        self.loss_rate = 0.010
 
         self.epochs = 100
         self.batch = 8
@@ -136,7 +138,7 @@ class EvolutionaryUnit(Model):
     def exchange(self, m1, m2):
         if type(m1) in self.target_modules:
             p = 0.5
-            i = torch.rand_like(m.weight.data) < p
+            i = torch.rand_like(m1.weight.data) < p
             m1.weight.data[i] = m2.weight.data[i]
             m2.weight.data[1-i] = m1.weight.data[1-i]
 
@@ -147,13 +149,17 @@ class EvolutionaryUnit(Model):
         return lambda m: f(m) if type(m) in self.target_modules else None
 
     def gain_ability(self, m):
-        i = torch.rand_like(m.weight.data) < self.gain_rate
-        v = torch.zeros_like(m.weight.data)
+        i, v = self.get_new_weights(m, self.gain_rate)
         torch.nn.init.kaiming_uniform_(v, a=math.sqrt(5))
         m.weight.data[i] = v[i]
 
     def lose_ability(self, m):
-        i = torch.rand_like(m.weight.data) < self.loss_rate
-        v = torch.zeros_like(m.weight.data).float()
+        i, v = self.get_new_weights(m, self.loss_rate)
         m.weight.data[i] = v[i]
+
+    def get_new_weights(self, m, rate):
+        j = m.weight.data < EPS
+        i = (torch.rand_like(m.weight.data) < rate) & j
+        v = torch.zeros_like(m.weight.data)
+        return i, v
 
