@@ -1,4 +1,4 @@
-import torch, math, tqdm, copy, random
+import torch, math, tqdm, copy, random, threading
 import torch.utils.data
 
 from MovingAverage import MovingAverage
@@ -45,8 +45,13 @@ class EvolutionaryModel:
 
     def do_cycle(self, X, Y, X_test, Y_test):
 
+        threads = []
         for unit in self.pool:
-            unit.fit(X, Y, X_test, Y_test)
+            thread = threading.Thread(target=unit.fit, args=(X, Y, X_test, Y_test))
+            thread.start()
+            threads.append(thread)
+        for thread in threads:
+            thread.join()
 
         self.i += 1
         if self.i % self.cycle == self.mutation_rate:
