@@ -60,7 +60,9 @@ class EvolutionaryModel:
         sorted_units = sorted(self.pool)[:self.max_adult_pop]
         scores = [u.get_score() for u in sorted_units]
         probs = self.softmax(-torch.Tensor(scores))
-        self.pool = (sorted_units + self.mate(list(zip(sorted_units, probs))))[:self.max_pop]
+        self.pool = sorted_units + self.mate(list(zip(sorted_units, probs)))
+        random.shuffle(self.pool)
+        self.pool = self.pool[:self.max_pop]
 
     def mate(self, unitprobs):
         children = []
