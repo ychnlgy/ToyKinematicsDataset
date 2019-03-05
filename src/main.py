@@ -23,6 +23,6 @@ def main(disable=0, device="cuda", cycles=100, D=32, N=128):
         pass
 
     best = net.select_best()
-    print(best.net[0].weight[0])
+    print(best.net[0].weight.data)
 
     train.visualize(net.select_best(), outf="results.png", D=D)
