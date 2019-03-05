@@ -75,7 +75,7 @@ class EvolutionaryUnit(Model):
         self.batch = 8
         self.score = MovingAverage(momentum=0.90)
 
-    def set_device(self):
+    def set_device(self, device):
         self.device = device
         self.to(device)
 
