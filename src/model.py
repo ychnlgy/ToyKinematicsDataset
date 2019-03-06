@@ -9,16 +9,32 @@ class Model(torch.nn.Module):
         super().__init__()
         self.net = torch.nn.Sequential(
 
-            torch.nn.Linear(D, 64),
+            torch.nn.Conv1d(1, 32, 3, padding=1),
+            torch.nn.AvgPool1d(2), # 32 -> 16
             torch.nn.LeakyReLU(),
-            torch.nn.Linear(64, 64),
-            torch.nn.LeakyReLU(),
-            torch.nn.Linear(64, 1)
+            torch.nn.BatchNorm1d(32),
 
+            torch.nn.Conv1d(32, 32, 3, padding=1),
+            torch.nn.AvgPool1d(2), # 16 -> 8
+            torch.nn.LeakyReLU(),
+            torch.nn.BatchNorm1d(32),
+
+            torch.nn.Conv1d(32, 32, 3, padding=1),
+            torch.nn.AvgPool1d(2), # 8 -> 4
+            torch.nn.LeakyReLU(),
+            torch.nn.BatchNOrm1d(32),
+
+            torch.nn.Conv1d(32, 1, 4)
         )
 
     def forward(self, X):
+        N, D = X.size()
+        assert D == 32
+        X = X.view(N, 1, 32)
         return self.net(X).squeeze(-1)
+
+    def penalty(self):
+        return 0
 
 class EvolutionaryModel:
 
