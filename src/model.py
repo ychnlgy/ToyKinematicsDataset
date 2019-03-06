@@ -22,7 +22,7 @@ class Model(torch.nn.Module):
             torch.nn.Conv1d(32, 32, 3, padding=1),
             torch.nn.AvgPool1d(2), # 8 -> 4
             torch.nn.LeakyReLU(),
-            torch.nn.BatchNOrm1d(32),
+            torch.nn.BatchNorm1d(32),
 
             torch.nn.Conv1d(32, 1, 4)
         )
