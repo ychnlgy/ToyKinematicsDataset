@@ -31,7 +31,7 @@ class Model(torch.nn.Module):
         N, D = X.size()
         assert D == 32
         X = X.view(N, 1, 32)
-        return self.net(X).squeeze(-1)
+        return self.net(X).view(len(X))
 
     def penalty(self):
         return 0
